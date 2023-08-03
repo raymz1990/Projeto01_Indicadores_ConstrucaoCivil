@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Introdução</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.28/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="1_intro.html">
+    <span class="fa fa-bookmark"></span>
+     
+    Introdução
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-line-chart"></span>
+     
+    Indicadores Ecônomico-Financeiros
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="divider"></li>
+    <li>
+      <a href="3_liquidez.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Liquidez
+      </a>
+    </li>
+    <li>
+      <a href="4_rentabilidade.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Rentabilidade
+      </a>
+    </li>
+    <li>
+      <a href="4_extra.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Lucratividade
+      </a>
+    </li>
+    <li>
+      <a href="5_bivar.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Endividamento
+      </a>
+    </li>
+    <li>
+      <a href="5_bivar.html">
+        <span class="fa fa-arrow-right"></span>
+         
+        Prazos Médios
+      </a>
+    </li>
+    <li class="divider"></li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://cutt.ly/Curriculo_BI/">
+    <span class="fa fa-user"></span>
+     
+    Raymundo
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Introdução</h1>
+
+</div>
+
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+<hr />
+<p>O setor da construçãoo civil tem grande importância na economia
+brasileira e é composto por diversas empresas de capital aberto na Bolsa
+de Valores. Por isso, é fundamental avaliar a performance dessas
+empresas, com o objetivo de identificar tendências e oportunidades de
+investimento. Nesse contexto, este estudo tem como objetivo analisar a
+performance das empresas do setor da construção civil, utilizando dados
+coletados no “Portal Dados Abertos CVM”. A análise se divide em quatro
+seções: apresentação das empresas e fatos relevantes em 2022, análise de
+desempenho operacional, análise de desempenho financeiro e análise
+individual de cada empresa. Espera-se que os resultados obtidos possam
+contribuir para uma melhor compreensão do mercado e para a tomada de
+decisões mais informadas pelos investidores.</p>
+<div id="section"
+class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills"></h3>
+<hr />
+<div id="empresas" class="section level4">
+<h4>EMPRESAS</h4>
+<center>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0dc333a58bdc907d2daf" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0dc333a58bdc907d2daf">{"x":{"filter":"none","vertical":false,"editable":{"target":"cell","disable":{"columns":null},"numeric":[],"date":[]},"data":[["Alphaville","Azedo &amp; Travassos","Corrêa Ribeiro","CR2","Cury","Cyrela","Dexco","Direcional","Emccamp","Eternit","Eucatex","Even","EZ Inc","Ez Tec","Gafisa","Guararapes","HBR Realty","Helbor","Inter","Intercement","JHSF","João Fortes","Kallas","Lavvi","Lindenberg","Log","Lopes","Melnick","Mendes Júnior","Mitre","Moura Dubex","MRV","Multiplan","Nexpe","Pacaembu","Patrimar","PDG Realty","Plano &amp; Plano","Portobello","Portuense","Priner","RNI","Rossi","Sondotecnica","Sugoi","Sultepa","SYN","Tecnisa","Tecnosolo","Tegra","Tenda","Tigre","Trisul","Unicasa","Urba","Viver","Votorantim","You Inc","Yuny"],["Incorporações","Construção Pesada","Exploração de Imóveis","Incorporações","Incorporações","Incorporações","Madeira e Papel","Incorporações","Incorporações","Produtos para Construção","Madeira e Papel","Incorporações","Incorporações","Incorporações","Incorporações","Madeira e Papel","Exploração de Imóveis","Incorporações","Incorporações","Produtos para Construção","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Exploração de Imóveis","Exploração de Imóveis","Incorporações","Construção Pesada","Incorporações","Incorporações","Incorporações","Exploração de Imóveis","Exploração de Imóveis","Incorporações","Incorporações","Incorporações","Incorporações","Produtos para Construção","Produtos para Construção","Serviços Diversos","Incorporações","Incorporações","Engenharia Consultiva","Incorporações","Construção Pesada","Exploração de Imóveis","Incorporações","Engenharia Consultiva","Incorporações","Incorporações","Produtos para Construção","Incorporações","Utilidades Domésticas","Loteamento","Incorporações","Produtos para Construção","Incorporações","Incorporações"],["SP","SP","BA","SP","SP","SP","SP","MG","MG","SP","SP","SP","SP","SP","SP","SC","SP","SP","MG","SP","SP","RJ","SP","SP","SP","MG","SP","RS","MG","SP","PE","MG","RJ","SP","SP","MG","SP","SP","SC","PA","RJ","SP","SP","RJ","SP","RS","SP","SP","RJ","SP","SP","SC","SP","RS","MG","SP","SP","SP","SP"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>EMPRESA<\/th>\n      <th>SEGMENTO<\/th>\n      <th>UF<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'width':'50%'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'width':'35'});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'width':'15%'});\n}"},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+</center>
+<hr />
+</div>
+<div id="empresas-por-segmento" class="section level4">
+<h4>EMPRESAS POR SEGMENTO</h4>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b87174e7bb4c67a13ac9" style="width:9600px;height:384px;"></div>
+<script type="application/json" data-for="htmlwidget-b87174e7bb4c67a13ac9">{"x":{"visdat":{"4bd073fb3333":["function () ","plotlyVisDat"]},"cur_data":"4bd073fb3333","attrs":{"4bd073fb3333":{"x":{},"y":{},"orientation":"h","hovertemplate":"Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","texttemplate":"%{x}","textposition":"outside","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Quantidade"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Segmento","type":"category","categoryorder":"array","categoryarray":["Loteamento","Serviços Diversos","Utilidades Domésticas","Engenharia Consultiva","Construção Pesada","Madeira e Papel","Produtos para Construção","Exploração de Imóveis","Incorporações"]},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[35,7,6,3,3,2,1,1,1],"y":["Incorporações","Exploração de Imóveis","Produtos para Construção","Construção Pesada","Madeira e Papel","Engenharia Consultiva","Loteamento","Serviços Diversos","Utilidades Domésticas"],"orientation":"h","hovertemplate":["Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>","Quantidade: %{x} <br>Segmento: %{y} <extra><\/extra>"],"texttemplate":["%{x}","%{x}","%{x}","%{x}","%{x}","%{x}","%{x}","%{x}","%{x}"],"textposition":["outside","outside","outside","outside","outside","outside","outside","outside","outside"],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<hr />
+</div>
+<div id="empresas-por-estado" class="section level4">
+<h4>EMPRESAS POR ESTADO</h4>
+<hr />
+</div>
+</div>
+<div id="auditoria"
+class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">AUDITORIA</h3>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f07a44c935cbf707fc7b" style="width:672px;height:576px;"></div>
+<script type="application/json" data-for="htmlwidget-f07a44c935cbf707fc7b">{"x":{"visdat":{"4bd06a4f7cf":["function () ","plotlyVisDat"]},"cur_data":"4bd06a4f7cf","attrs":{"4bd06a4f7cf":{"labels":{},"parents":{},"values":{},"branchvalues":"total","marker":{"colors":{}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Construção Pesada","Exploração de Imóveis","Incorporações","Outros","Produtos para Construção","Lindenberg","Corrêa Ribeiro","Eternit","Eucatex","João Fortes","Sondotecnica","Azedo & Travassos","Sultepa","Portobello","Cyrela","Gafisa","Rossi","Lopes","Tecnisa","RNI","PDG Realty","Even","JHSF","CR2","Viver","Ez Tec","Helbor","MRV","Multiplan","SYN","Moura Dubex","Dexco","Trisul","Tenda","Nexpe","Direcional","Unicasa","Log","You Inc","Sugoi","Priner","Inter","Mitre","Lavvi","Plano & Plano","Cury","Melnick","Pacaembu","Alphaville","Patrimar","EZ Inc","HBR Realty","Urba","Kallas","Tegra","Emccamp","Yuny","Intercement","Guararapes","Tigre","Votorantim"],"parents":["","","","","","Incorporações","Exploração de Imóveis","Produtos para Construção","Outros","Incorporações","Outros","Construção Pesada","Construção Pesada","Produtos para Construção","Incorporações","Incorporações","Incorporações","Exploração de Imóveis","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Exploração de Imóveis","Exploração de Imóveis","Incorporações","Outros","Incorporações","Incorporações","Exploração de Imóveis","Incorporações","Outros","Exploração de Imóveis","Incorporações","Incorporações","Outros","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Incorporações","Exploração de Imóveis","Outros","Incorporações","Incorporações","Incorporações","Incorporações","Produtos para Construção","Outros","Produtos para Construção","Produtos para Construção"],"values":[530821,2947678,39631007,14007449,38790582,149193,2260,1187383,2510647,6597,141860,384469,146352,2196681,5412295,1135997,37403,194985,237347,667091,119318,2317936,1902092,4081,121982,1121260,906437,6645285,1797605,474499,799527,8486650,760270,2412586,120233,2162616,245678,217230,880076,164723,813494,472817,758626,555327,1492205,2257294,1029568,859857,265134,829418,35361,140866,207472,652603,1497439,832356,128890,3728387,1601648,5880765,25797366],"branchvalues":"total","marker":{"color":"rgba(31,119,180,1)","colors":["#979DA6","#C7CFD9","#261818","#D99771","#593B34","#261818","#C7CFD9","#593B34","#D99771","#261818","#D99771","#979DA6","#979DA6","#593B34","#261818","#261818","#261818","#C7CFD9","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#C7CFD9","#C7CFD9","#261818","#D99771","#261818","#261818","#C7CFD9","#261818","#D99771","#C7CFD9","#261818","#261818","#D99771","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#261818","#C7CFD9","#D99771","#261818","#261818","#261818","#261818","#593B34","#D99771","#593B34","#593B34"],"line":{"color":"rgba(255,255,255,1)"}},"type":"treemap","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<hr />
+<center>
+</center>
+<hr />
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

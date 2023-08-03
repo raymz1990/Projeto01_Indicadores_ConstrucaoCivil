@@ -1,0 +1,51 @@
+---
+title: "Performance das Companhias do Setor da Construção Civil"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    # theme: darkly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+    #keep_md: true
+---
+
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+---
+
+# Sobre este estudo
+
+---
+
+Este estudo tem como objetivo analisar a performance de empresas do setor da construção civil listadas na Bolsa de Valores brasileira, utilizando como fonte de dados as Demonstrações Financeiras Padronizadas (DFP) dos anos 2019, 2020, 2021 e 2022, obtidas no "Portal Dados Abertos CVM". Além disso, foram coletadas informações relevantes sobre a atividade das empresas para fins de complementação de dados.
+
+Todo o conjunto de dados foi extraído, transformado e carregado no software R, onde foi realizada toda a análise exploratória.
+
+
+---
+
+O estudo se divide nas seguintes seções:
+
+ - Introdução
+
+
+---

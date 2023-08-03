@@ -1,0 +1,162 @@
+---
+title: "Introdução"
+output:
+  html_document:
+    #body{text-align: justify}                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    #theme: flatly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+#    keep_md: true                   
+
+---
+<style>
+  body {
+    text-align: justify;
+  }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
+source("./R/1_intro.R")
+```
+
+---
+
+O setor da construçãoo civil tem grande importância na economia brasileira e é composto por diversas empresas de capital aberto na Bolsa de Valores. Por isso, é fundamental avaliar a performance dessas empresas, com o objetivo de identificar tendências e oportunidades de investimento. Nesse contexto, este estudo tem como objetivo analisar a performance das empresas do setor da construção civil, utilizando dados coletados no "Portal Dados Abertos CVM". A análise se divide em quatro seções: apresentação das empresas e fatos relevantes em 2022, análise de desempenho operacional, análise de desempenho financeiro e análise individual de cada empresa. Espera-se que os resultados obtidos possam contribuir para uma melhor compreensão do mercado e para a tomada de decisões mais informadas pelos investidores.
+
+
+###  {.tabset .tabset-fade .tabset-pills}
+
+```{r, echo=FALSE}
+#-----------------------------------------------------------------------
+
+```
+
+
+---
+
+#### EMPRESAS
+
+<center>
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE}
+
+DT::datatable(intro_tb_empresas[,c('EMPRESA', 
+                                   'SEGMENTO', 
+                                   'UF')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "50%") %>%
+  formatStyle(columns = c('SEGMENTO'), width = "35") %>%
+  formatStyle(columns = c('UF'), width = "15%")
+              
+```
+</center>
+
+---
+
+#### EMPRESAS POR SEGMENTO
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', fig.width = 100, fig.height = 4, warning=TRUE, echo = FALSE}
+
+plot_ly(
+  intro_graph_segmento, 
+  x = ~Freq, 
+  y = ~reorder(factor(SEGMENTO), Freq),
+  type = "bar", 
+  orientation = 'h',
+  hovertemplate = paste('Quantidade: %{x}',
+                        '<br>Segmento: %{y}',
+                        '<extra></extra>'),
+  texttemplate = "%{x}",
+  textposition = "outside"
+) %>%
+  layout(
+    xaxis = list(title = "Quantidade"), 
+    yaxis = list(title = "Segmento")
+  )
+
+```
+
+---
+
+#### EMPRESAS POR ESTADO
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=FALSE, echo = FALSE}
+#table1 <- freq_n_ord(EMPRESA$UF)
+
+#ggplot(data=table1, aes(x=reorder(Niveis, -Frequencia), 
+#                       y=Frequencia#, 
+#                       #fill = Niveis
+#                       )) + 
+#  geom_bar(stat="identity", 
+#           col=1,
+#           lwd=1)+
+#  ylim(c(0, 
+#         (max(table1$Frequencia)+ (max(table1$Frequencia)*0.2))))+
+#  geom_text(aes(label=Frequencia), 
+#            vjust=-1, 
+#            color=1, 
+#            size=8)+
+#  ylab("") +
+#  xlab("") +
+#  ggtitle("")+
+#  theme_classic() + theme(legend.position = 'bottom',
+#    plot.title = element_text(family = "Helvetica", 
+#                              face = "bold", 
+#                              size = (20),
+#                              hjust = 0.5),
+#    axis.title = element_text(face = "bold",
+#                              size = 15),
+    #axis.text = element_blank(),
+#    legend.title = element_blank(),
+#    text = element_text(size=15)) 
+```
+
+
+---
+
+### AUDITORIA {.tabset .tabset-fade .tabset-pills}
+
+```{r, echo=FALSE}
+
+treemap <- plot_ly(
+  data = d3, 
+  type = "treemap", 
+  labels = ~EMPRESA,
+  parents = ~SEGMENTO, 
+  values = ~VL_CONTA,
+  branchvalues = "total",
+  marker = list(colors = ~Cor)
+)
+
+treemap
+
+```
+---
+
+<center>
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE}
+
+#pander::pander(table3)
+```
+</center>
+
+---

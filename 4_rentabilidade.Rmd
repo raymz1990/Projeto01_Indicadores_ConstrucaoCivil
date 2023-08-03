@@ -1,0 +1,164 @@
+---
+title: "Liquidez"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    #theme: flatly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+#    keep_md: true                   
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
+# source("./R/pacotes.R")
+# source("./R/funcoes-auxiliares.R")
+# source("./R/importacao-respostas.R")
+source("./R/DemonstracoesFinanceiras.R")
+```
+
+Os indicadores de liquidez são usados para mostrar a capacidade financeira de uma empresa. A partir deles, é possível entender como anda a relação entre receita, patrimônio e despesas de curto e longo prazo. Com estes dados, a companhia pode tomar decisões estratégicas visando a saúde financeira do negócio.
+
+---
+
+### Liquidez Corrente
+
+O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo, 
+indica à solidez financeira da empresa, e expressa quantas vezes os Ativos Circulantes 
+“cobrem” os Passivos Circulantes. Quando o índice de liquidez corrente for menor que um 
+significa que a empresa não tem Ativos Circulantes suficientes para compensar os Passivos 
+Circulantes.
+
+---
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+```{r, echo=FALSE}
+
+# Filtrar tabela empresas
+filtered <- subset(empresas, select = c("CD_CVM", "SEGMENTO", "EMPRESA"))
+
+# Mesclar os resultados das tabelas filtradas
+BP_filtered <- merge(BP, filtered, by = "CD_CVM", all = TRUE)
+
+# Filtrar tabela BP para as colunas desejadas
+BP_filtered <- subset(BP_filtered, select = c("CD_CONTA", "EMPRESA", "SEGMENTO", "TRIMESTRE", "VL_CONTA", "ANO"))
+
+# Filtrar apenas as linhas com CD_CONTA igual a "1.01" ou "2.01"
+BP_filtered <- subset(BP_filtered, CD_CONTA %in% c("1.01", "2.01"))
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+BP_aggregated <- aggregate(VL_CONTA ~ EMPRESA + SEGMENTO + TRIMESTRE + CD_CONTA + ANO, data = BP_filtered, FUN = mean)
+
+# Reclassificar o segmento como "Outros"
+BP_aggregated$SEGMENTO <- ifelse(BP_aggregated$SEGMENTO %in% c("Madeira e Papel", "Engenharia Consultiva", "Utilidades Domésticas", "Serviços Diversos", "Loteamento"), "Outros", BP_aggregated$SEGMENTO)
+
+# Pivotar a tabela para ter uma coluna para a divisão CD_CONTA "1.01" / CD_CONTA "2.01"
+liquidez <- reshape(BP_aggregated, idvar = c("EMPRESA", "SEGMENTO", "ANO", "TRIMESTRE"), timevar = "CD_CONTA", direction = "wide")
+
+# Calcular a coluna LIQUIDEZ_CORRENTE como a divisão VL_CONTA.1.01 / VL_CONTA.2.01
+liquidez$LIQUIDEZ_CORRENTE <- liquidez$VL_CONTA.1.01 / liquidez$VL_CONTA.2.01
+
+# Reordenar as colunas
+liquidez <- liquidez[, c("EMPRESA", "SEGMENTO", "ANO", "TRIMESTRE", "VL_CONTA.1.01", "VL_CONTA.2.01", "LIQUIDEZ_CORRENTE")]
+
+
+
+
+```
+</center>
+
+---
+
+##### Liquidez Corrente em 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Filtrar os resultados apenas para o ano de 2022
+liquidez_2022 <- subset(liquidez, ANO == 2022)
+
+# Calcular a média para cada segmento no período
+liquidez_segmento <- aggregate(LIQUIDEZ_CORRENTE ~ SEGMENTO + TRIMESTRE, data = liquidez_2022, FUN = mean)
+
+# Plotar o gráfico de linhas usando o pacote ggplot2
+library(ggplot2)
+
+ggplot(liquidez_segmento, aes(x = TRIMESTRE, y = LIQUIDEZ_CORRENTE, color = SEGMENTO, group = SEGMENTO)) +
+  geom_line() +
+  labs(x = "Trimestre", y = "Média da Liquidez Corrente") +
+  ggtitle("Média da Liquidez Corrente por Trimestre e Segmento") +
+  scale_color_discrete(name = "Segmento") +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+---
+
+##### Gráfico 2
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+```
+
+---
+
+##### Gráfico 3
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+ 
+```
+
+---
+
+### ... {.tabset .tabset-fade .tabset-pills}
+
+---
+
+#### .
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+
+```
+
+---
+
+#### .
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+
+```
+
+---
+
+### ... {.tabset .tabset-fade .tabset-pills}
+
+---
+
+#### .
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+
+```
+
+---

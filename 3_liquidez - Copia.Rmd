@@ -1,0 +1,1117 @@
+---
+title: "LIQUIDEZ"
+output:
+  html_document:                    
+    #toc: true                       
+    #toc_depth: 3                    
+    #toc_float:                      
+    #  collapsed: true
+    #  smooth_scroll: true
+    #number_sections: true           
+    #theme: flatly
+    #spacelab
+    #default,cerulean,journal,flatly,readable,spacelab,
+    #united,cosmo,lumen,paper,sandstone,simplex,yeti
+    
+    highlight: espresso
+    #default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, and textmate
+    #css: styles.css                
+    fig_width: 7                    
+    fig_height: 6                   
+    fig_caption: true               
+    fig_align: 'center'
+    #code_folding: hide              
+#    keep_md: true                   
+---
+
+<style>
+body {
+  font-family: "Montserrat";
+  text-align: justify;
+}
+</style>
+
+```{r setup, include=FALSE}
+# Configurações do knitr
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
+source("./R/pacotes.R")
+# source("./R/funcoes-auxiliares.R")
+source("./R/DemonstracoesFinanceiras.R")
+```
+
+```{r, echo=FALSE}
+
+# Reclassificar o segmento como "Outros"
+empresas <- empresas %>%
+  mutate(SEGMENTO = case_when(
+    SEGMENTO %in% c("Produtos para Construção",
+                    "Madeira e Papel", 
+                    "Engenharia Consultiva", 
+                    "Utilidades Domésticas", 
+                    "Serviços Diversos", 
+                    "Loteamento") ~ "Outros",
+    TRUE ~ SEGMENTO
+  ))
+
+# Filtrar tabela empresas
+filtered <- subset(empresas, select = c("CD_CVM", "SEGMENTO", "EMPRESA"))
+
+# Mesclar os resultados das tabelas filtradas
+BP_filtered <- merge(BP1, filtered, by = "CD_CVM", all = TRUE)
+
+# Filtrar tabela BP para as colunas desejadas
+liquidez <- subset(BP_filtered, select = c("EMPRESA", 
+                                           "SEGMENTO", 
+                                           "TRIMESTRE", 
+                                           "ANO",
+                                           "1.01 - Ativo Circulante",
+                                           "1.01.01 - Caixa e Equivalentes de Caixa",
+                                           "1.01.02 - Aplicações Financeiras",
+                                           "1.01.04 - Estoques",
+                                           "1.02.01 - Ativo Realizável a Longo Prazo",
+                                           "2.01 - Passivo Circulante",
+                                           "2.02 - Passivo Não Circulante"))
+
+
+
+# Coluna de Liquidez Geral
+liquidez$liq_geral <- round((liquidez$'1.01 - Ativo Circulante' + liquidez$'1.02.01 - Ativo Realizável a Longo Prazo') / (liquidez$'2.01 - Passivo Circulante' + liquidez$'2.02 - Passivo Não Circulante'), 2)
+
+# Coluna de Liquidez Corrente
+liquidez$liq_corrente <- round(liquidez$'1.01 - Ativo Circulante' / liquidez$'2.01 - Passivo Circulante', 2)
+
+# Coluna de Liquidez Seca
+liquidez$liq_seca <- round((liquidez$'1.01 - Ativo Circulante' - liquidez$'1.01.04 - Estoques') / liquidez$'2.01 - Passivo Circulante', 2)
+
+# Coluna de Liquidez Imediata
+liquidez$liq_imediata <- round((liquidez$'1.01.01 - Caixa e Equivalentes de Caixa' + liquidez$'1.01.02 - Aplicações Financeiras') / liquidez$'2.01 - Passivo Circulante', 2)
+
+# Filtrar os resultados apenas para o ano de 2022
+liquidez_2022 <- subset(liquidez, ANO == 2022)
+
+
+
+```
+
+Os indicadores de liquidez são usados para mostrar a capacidade financeira de uma empresa. A partir deles, é possível entender como anda a relação entre receita, patrimônio e despesas de curto e longo prazo. Com estes dados, a companhia pode tomar decisões estratégicas visando a saúde financeira do negócio.
+
+------------------------------------------------------------------------
+
+### LIQUIDEZ GERAL
+
+------------------------------------------------------------------------
+
+O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo, indica a solidez financeira da empresa, e expressa quantas vezes os Ativos Circulantes "cobrem" os Passivos Circulantes. Quando o índice de liquidez corrente for menor que um significa que a empresa não tem Ativos Circulantes suficientes para compensar os Passivos Circulantes.
+
+------------------------------------------------------------------------
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+</center>
+
+##### LIQUIDEZ GERAL EM 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_geral <- aggregate(liq_geral ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+liq_geral_segmento <- subset(liq_geral, ANO == 2022)
+liq_geral_segmento <- aggregate(liq_geral ~ SEGMENTO + TRIMESTRE, data = liq_geral_segmento, FUN = mean)
+
+# Plotar o gráfico de linhas usando o pacote ggplot2
+
+ggplot(liq_geral_segmento, aes(x = TRIMESTRE, y = liq_geral, color = SEGMENTO, group = SEGMENTO)) +
+  geom_line() +
+  geom_point() +
+  geom_text(aes(label = round(liq_geral, 2)), vjust = -0.5) +
+  labs(x = "", y = "") +
+  scale_color_brewer(name = "Segmento",
+                     palette = "RdBu",
+                     drop = FALSE) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  ylim(0, ceiling(max(liq_geral_segmento$liq_geral)))
+
+
+
+```
+
+------------------------------------------------------------------------
+
+##### INCORPORAÇÕES
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+library(dplyr)
+library(DT)
+
+tb_liq.geral_incorp <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Incorporações") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.geral_incorp[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### EXPLORAÇÃO DE IMÓVEIS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.geral_expimoveis <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.geral_expimoveis[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+
+```
+
+------------------------------------------------------------------------
+
+##### CONSTRUÇÃO PESADA
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.geral_constpesada <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Construção Pesada") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.geral_constpesada[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### OUTROS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.geral_outros <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Outros") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.geral_outros[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+### LIQUIDEZ CORRENTE
+
+------------------------------------------------------------------------
+
+O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo, indica a solidez financeira da empresa, e expressa quantas vezes os Ativos Circulantes "cobrem" os Passivos Circulantes. Quando o índice de liquidez corrente for menor que um significa que a empresa não tem Ativos Circulantes suficientes para compensar os Passivos Circulantes.
+
+------------------------------------------------------------------------
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+</center>
+
+##### LIQUIDEZ CORRENTE EM 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_corrente <- aggregate(liq_corrente ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+liq_corrente_segmento <- subset(liq_corrente, ANO == 2022)
+liq_corrente_segmento <- aggregate(liq_corrente ~ SEGMENTO + TRIMESTRE, data = liq_corrente_segmento, FUN = mean)
+
+# Plotar o gráfico de linhas usando o pacote ggplot2
+
+ggplot(liq_corrente_segmento, aes(x = TRIMESTRE, y = liq_corrente, color = SEGMENTO, group = SEGMENTO)) +
+  geom_line() + # Remova a legenda do gráfico
+  geom_point() +
+  geom_text(aes(label = round(liq_corrente, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
+  labs(x = "", y = "") +
+  scale_fill_brewer(name = "Segmento",
+                    palette = "RdBu", 
+                    drop = FALSE) +
+  theme_light() +
+  theme(legend.position = "bottom") +
+  ylim(0, ceiling(max(liq_corrente_segmento$liq_corrente)))  # Defina o limite do eixo y
+
+
+```
+
+------------------------------------------------------------------------
+
+##### INCORPORAÇÕES
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.corrente_incorp <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Incorporações") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.corrente_incorp[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+
+
+```
+
+------------------------------------------------------------------------
+
+##### EXPLORAÇÃO DE IMÓVEIS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+liq_corrente_expimoveis <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_corrente_expimoveis[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### CONSTRUÇÃO PESADA
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+liq_corrente_constpesada <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Construção Pesada") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_corrente_constpesada[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### OUTROS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+liq_corrente_outros <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Outros") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_corrente_outros[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+### LIQUIDEZ SECA
+
+------------------------------------------------------------------------
+
+O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo, indica a solidez financeira da empresa, e expressa quantas vezes os Ativos Circulantes "cobrem" os Passivos Circulantes. Quando o índice de liquidez corrente for menor que um significa que a empresa não tem Ativos Circulantes suficientes para compensar os Passivos Circulantes.
+
+------------------------------------------------------------------------
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+</center>
+
+##### LIQUIDEZ SECA EM 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_seca <- aggregate(liq_seca ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+liq_seca_segmento <- subset(liq_seca, ANO == 2022)
+liq_seca_segmento <- aggregate(liq_seca ~ SEGMENTO + TRIMESTRE, data = liq_seca_segmento, FUN = mean)
+
+# Plotar o gráfico de linhas usando o pacote ggplot2
+
+ggplot(liq_seca_segmento, aes(x = TRIMESTRE, y = liq_seca, color = SEGMENTO, group = SEGMENTO)) +
+  geom_line() + # Remova a legenda do gráfico
+  geom_point() +
+  geom_text(aes(label = round(liq_seca, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
+  labs(x = "", y = "") +
+  scale_fill_brewer(name = "Segmento",
+                    palette = "RdBu", 
+                    drop = FALSE) +
+  theme_light() +
+  theme(legend.position = "bottom") +
+  ylim(0, ceiling(max(liq_seca_segmento$liq_seca)))  # Defina o limite do eixo y
+
+
+```
+
+------------------------------------------------------------------------
+
+##### INCORPORAÇÕES
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+tb_liq.seca_incorp <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Incorporações") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.seca_incorp[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### EXPLORAÇÃO DE IMÓVEIS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+liq_seca_expimoveis <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_seca_expimoveis[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### CONSTRUÇÃO PESADA
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.seca_constpesada <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Construção Pesada") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.seca_constpesada[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### OUTROS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+liq_seca_outros <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Outros") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_seca_outros[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+### LIQUIDEZ IMEDIATA
+
+------------------------------------------------------------------------
+
+A liquidez imediata é um conceito financeiro que se refere à capacidade de uma empresa ou indivíduo de pagar suas obrigações de curto prazo com ativos prontamente disponíveis, sem a necessidade de converter ativos em dinheiro ou recorrer a fontes externas de financiamento. Em outras palavras, é a capacidade de uma entidade de cumprir suas obrigações financeiras imediatas.
+
+Os ativos considerados líquidos imediatos são aqueles que podem ser convertidos em dinheiro rapidamente, sem perda significativa de valor. Isso geralmente inclui caixa, equivalentes de caixa (como depósitos bancários de curto prazo) e investimentos de curto prazo que podem ser facilmente vendidos no mercado.
+
+Os indicadores comumente utilizados para avaliar a liquidez imediata de uma entidade são a razão de liquidez imediata (também conhecida como acid test ou quick ratio) e a liquidez corrente (current ratio). Esses indicadores comparam os ativos líquidos imediatos disponíveis com as obrigações de curto prazo da empresa.
+
+Em resumo, a liquidez imediata é a medida da capacidade de uma entidade de atender suas obrigações de curto prazo com ativos líquidos prontamente disponíveis, sem a necessidade de vender ativos ou recorrer a financiamentos externos. É um indicador importante para a saúde financeira de uma empresa ou indivíduo.
+
+------------------------------------------------------------------------
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+</center>
+
+##### LIQUIDEZ IMEDIATA EM 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_imediata <- aggregate(liq_imediata ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+liq_imediata_segmento <- subset(liq_imediata, ANO == 2022)
+liq_imediata_segmento <- aggregate(liq_imediata ~ SEGMENTO + TRIMESTRE, data = liq_imediata_segmento, FUN = mean)
+
+# Plotar o gráfico de linhas usando o pacote ggplot2
+
+ggplot(liq_imediata_segmento, aes(x = TRIMESTRE, y = liq_imediata, color = SEGMENTO, group = SEGMENTO)) +
+  geom_line() + # Remova a legenda do gráfico
+  geom_point() +
+  geom_text(aes(label = round(liq_imediata, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
+  labs(x = "", y = "") +
+  scale_fill_brewer(name = "Segmento",
+                    palette = "RdBu", 
+                    drop = FALSE) +
+  theme_light() +
+  theme(legend.position = "bottom") +
+  ylim(0, ceiling(max(liq_imediata_segmento$liq_imediata)))  # Defina o limite do eixo y
+
+
+```
+
+------------------------------------------------------------------------
+
+##### INCORPORAÇÕES
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+tb_liq.imediata_incorp <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Incorporações") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.imediata_incorp[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+
+```
+
+------------------------------------------------------------------------
+
+##### EXPLORAÇÃO DE IMÓVEIS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+liq_imediata_expimoveis <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(liq_imediata_expimoveis[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### CONSTRUÇÃO PESADA
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.imediata_constpesada <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Construção Pesada") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#media_segmento <- liq_imediata_incorp %>%
+#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
+#  mutate(EMPRESA = "Média do Segmento") %>%
+#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
+
+#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.imediata_constpesada[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### OUTROS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq.imediata_outros <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Outros") %>%
+  select(EMPRESA) %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+#----------------------------------------------------------------------
+
+DT::datatable(tb_liq.imediata_outros[,c('EMPRESA', 
+                                        '4T19',
+                                        '4T20',
+                                        '4T21',
+                                        '4T22')], 
+              class = 'cell-border stripe',
+              rownames = F,
+              #filter = 'top',
+              editable = T) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+### CAPITAL CIRCULANTE LÍQUIDO
+
+------------------------------------------------------------------------
+
+O capital circulante líquido indica uma falta ou sobra do ativo circulante em relação ao 
+passivo circulante. Quanto maior o capital circulante líquido terá folga no giro de curto prazo 
+da empresa.
+
+------------------------------------------------------------------------
+
+####  {.tabset .tabset-fade .tabset-pills}
+
+</center>
+
+##### CAPITAL CIRCULANTE EM 2022
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+# Filtrar tabela BP para as colunas desejadas
+capitalcirculante <- subset(BP_filtered, select = c("EMPRESA", 
+                                                    "SEGMENTO", 
+                                                    "TRIMESTRE",
+                                                    "ANO",
+                                                    "1.01 - Ativo Circulante",
+                                                    "2.01 - Passivo Circulante"))
+
+# Coluna de Capital Circulante
+capitalcirculante$capitalcirculante <- round(((capitalcirculante$'1.01 - Ativo Circulante' - capitalcirculante$'2.01 - Passivo Circulante') / 1000), 1)
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+cap_circulante <- aggregate(capitalcirculante ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = capitalcirculante, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+cap_circulante_segmento <- subset(cap_circulante, ANO == 2022)
+cap_circulante_segmento <- aggregate(capitalcirculante ~ SEGMENTO + TRIMESTRE, data = cap_circulante_segmento, FUN = mean)
+cap_circulante_segmento$capitalcirculante <- round((cap_circulante_segmento$capitalcirculante), 1)
+
+# Definir a ordem dos segmentos
+cap_circulante_segmento$SEGMENTO <- factor(cap_circulante_segmento$SEGMENTO, levels = c("Incorporações", "Exploração de Imóveis", "Construção Pesada", "Outros"))
+
+# Plotar o gráfico de barras
+ggplot(cap_circulante_segmento, aes(x = SEGMENTO, y = capitalcirculante, fill = TRIMESTRE)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = paste0(format(capitalcirculante, big.mark = ".", decimal.mark = ","))), 
+            position = position_dodge(width = 0.9), vjust = -0.5) +
+  xlab("Segmento") +
+  ylab("Capital Circulante (em milhões)") +
+  scale_fill_brewer(name = "Trimestre",
+                    palette = "RdBu", 
+                    drop = FALSE) +
+  theme_bw() +
+  theme(legend.position = "bottom")#,
+        #plot.title = element_text(family = "Helvetica", face = "bold", size = 20, hjust = 0.5),
+        #axis.title = element_text(face = "bold", size = 15),
+        #text = element_text(size = 15))
+
+
+```
+
+------------------------------------------------------------------------
+
+##### INCORPORAÇÕES
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+
+library(dplyr)
+library(DT)
+
+tb_cap.circulante_incorp <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Incorporações") %>%
+  select(EMPRESA) %>%
+  left_join(cap_circulante %>% select(EMPRESA, TRIMESTRE, capitalcirculante), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = capitalcirculante) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+# Exibir a tabela usando DT::datatable com separador de milhares e uma casa decimal
+DT::datatable(tb_cap.circulante_incorp,
+              class = 'cell-border stripe',
+              rownames = FALSE,
+              editable = TRUE) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatRound(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    digits = 1
+  ) %>%
+  formatCurrency(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    currency = "",
+    interval = 3,
+    mark = ".",
+    dec.mark = ",",
+    digits = 1
+  )
+
+
+```
+
+------------------------------------------------------------------------
+
+##### EXPLORAÇÃO DE IMÓVEIS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+library(dplyr)
+library(DT)
+
+tb_cap.circulante_expimoveis <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  select(EMPRESA) %>%
+  left_join(cap_circulante %>% select(EMPRESA, TRIMESTRE, capitalcirculante), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = capitalcirculante) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+# Exibir a tabela usando DT::datatable com separador de milhares e uma casa decimal
+DT::datatable(tb_cap.circulante_expimoveis,
+              class = 'cell-border stripe',
+              rownames = FALSE,
+              editable = TRUE) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatRound(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    digits = 1
+  ) %>%
+  formatCurrency(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    currency = "",
+    interval = 3,
+    mark = ".",
+    dec.mark = ",",
+    digits = 1
+  )
+
+```
+
+------------------------------------------------------------------------
+
+##### CONSTRUÇÃO PESADA
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+library(dplyr)
+library(DT)
+
+tb_cap.circulante_constpesada <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Construção Pesada") %>%
+  select(EMPRESA) %>%
+  left_join(cap_circulante %>% select(EMPRESA, TRIMESTRE, capitalcirculante), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = capitalcirculante) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+# Exibir a tabela usando DT::datatable com separador de milhares e uma casa decimal
+DT::datatable(tb_cap.circulante_constpesada,
+              class = 'cell-border stripe',
+              rownames = FALSE,
+              editable = TRUE) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatRound(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    digits = 1
+  ) %>%
+  formatCurrency(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    currency = "",
+    interval = 3,
+    mark = ".",
+    dec.mark = ",",
+    digits = 1
+  )
+
+```
+
+------------------------------------------------------------------------
+
+##### OUTROS
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+library(dplyr)
+library(DT)
+
+tb_cap.circulante_outros <- empresas %>%
+  select(EMPRESA, SEGMENTO) %>%
+  filter(SEGMENTO == "Outros") %>%
+  select(EMPRESA) %>%
+  left_join(cap_circulante %>% select(EMPRESA, TRIMESTRE, capitalcirculante), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = capitalcirculante) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+# Exibir a tabela usando DT::datatable com separador de milhares e uma casa decimal
+DT::datatable(tb_cap.circulante_outros,
+              class = 'cell-border stripe',
+              rownames = FALSE,
+              editable = TRUE) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatRound(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    digits = 1
+  ) %>%
+  formatCurrency(
+    columns = c("4T19", "4T20", "4T21", "4T22"),
+    currency = "",
+    interval = 3,
+    mark = ".",
+    dec.mark = ",",
+    digits = 1
+  )
+
+```
