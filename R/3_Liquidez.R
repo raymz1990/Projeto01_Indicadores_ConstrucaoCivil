@@ -1,7 +1,7 @@
 ####################### INSTRUÇÕES #######################
 ## Neste arquivo serão somente feito os tratamentos dos dados
 
-atalho <- "C:/Users/raymu/OneDrive/Documentos/R/ProjetoA_Indicadores_ConstrucaoCivil/"
+atalho <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/"
 
 source(paste(atalho, "R/0_DemonstracoesFinanceiras.R", sep = ""))
 

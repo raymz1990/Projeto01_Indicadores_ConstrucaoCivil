@@ -111,18 +111,30 @@ paleta_cores <- data.frame(
     'Outros'                    # 10
     ),
   Cor = c(
-    "#979DA6",   # 1
-    "#595656",   # 2
-    "#C7CFD9",   # 3
-    "#261818",   # 4
-    "#8C6E49",   # 5
-    "#b15928",   # 6
-    "#593B34",   # 7
-    "#403E3B",   # 8
-    "#A5A6A1",   # 9
-    "#D99771"    # 10 
+    "#A6A19F",   # 1
+    "#594539",   # 2
+    "#8C7E79",   # 3
+    "#0D0A09",   # 4
+    "#F2F0F0",   # 5
+    "#735E51",   # 6
+    "#403430",   # 7
+    "#A69992",   # 8
+    "#D9D5D2",   # 9
+    "#594B46"    # 10 
   )
 )
+
+# definição de cor para cada Segmento
+cor_constpesada <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Construção Pesada"]
+cor_engcons <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Engenharia Consultiva"]
+cor_expimoveis <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Exploração de Imóveis"]
+cor_incorp <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Incorporações"]
+cor_lotes <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Loteamento"]
+cor_madeira <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Madeira e Papel"]
+cor_prodconst <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Produtos para Construção"]
+cor_servicos <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Serviços Diversos"]
+cor_utilidades <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Utilidades Domésticas"]
+cor_outros <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Outros"]
 
 
 ################## DEMONSTRACOES FINANCEIRAS #########

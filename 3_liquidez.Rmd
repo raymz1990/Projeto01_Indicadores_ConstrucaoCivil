@@ -127,14 +127,14 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2022$Incorporações),
     textposition = "top center",
     textfont = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 12),
     marker = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 5),
     line = list(
       width = 2,
-      color = "#334075"
+      color = cor_incorp
     )
   ) %>%
   add_trace(
@@ -146,14 +146,14 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2022$`Exploração de Imóveis`),
     textposition = "top center",
     textfont = list(
-      color = "#F2294E",
+      color = ;cor_expimoveis,
       size = 12),
     marker = list(
-      color = "#F2294E",
+      color = cor_expimoveis,
       size = 5),
     line = list(
       width = 2,
-      color = "#F2294E")
+      color = cor_expimoveis)
   ) %>%
   add_trace(
     name = "Produtos para Construção",
@@ -164,14 +164,14 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2022$`Produtos para Construção`),
     textposition = "top center",
     textfont = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 12),
     marker = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 5),
     line = list(
       width = 2,
-      color = "#05C7F2")
+      color = cor_prodconst)
   ) %>%
   add_trace(
     name = "Outros",
@@ -182,14 +182,14 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2022$Outros),
     textposition = "top center",
     textfont = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 12),
     marker = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 5),
     line = list(
       width = 2,
-      color = "#FFB700")
+      color = cor_outros)
   ) %>%
   layout(
     legend = list(
