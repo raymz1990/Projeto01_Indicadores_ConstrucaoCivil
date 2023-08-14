@@ -35,9 +35,52 @@ liquidez_2019 <- subset(liquidez, ANO == 2019)
 liq_geral <- aggregate(liq_geral ~ SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
 liq_geral <- liq_geral %>%
   pivot_wider(names_from = SEGMENTO, values_from = liq_geral)
+
 liq_geral_2022 <- subset(liq_geral, ANO == 2022)
 liq_geral_2021 <- subset(liq_geral, ANO == 2021)
 liq_geral_2020 <- subset(liq_geral, ANO == 2020)
 liq_geral_2019 <- subset(liq_geral, ANO == 2019)
 
+# Definindo o maior valor para o eixo y dos graficos
+ymaior_liq_geral <- max(as.matrix(liq_geral[, -c(1:3)]))
+# Arredonda o valor para cima
+ymaior_liq_geral <- ceiling(ymaior_liq_geral)
+# Verifica se o valor é ímpar
+if (ymaior_liq_geral %% 2 == 1) {
+  # Se for ímpar, arredonda para cima novamente para obter o próximo número par
+  ymaior_liq_geral <- ymaior_liq_geral + 1
+}
+
+# Liquidez Corrente
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_corrente <- aggregate(liq_corrente ~ SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+liq_corrente <- liq_corrente %>%
+  pivot_wider(names_from = SEGMENTO, values_from = liq_corrente)
+
+liq_corrente_2022 <- subset(liq_corrente, ANO == 2022)
+liq_corrente_2021 <- subset(liq_corrente, ANO == 2021)
+liq_corrente_2020 <- subset(liq_corrente, ANO == 2020)
+liq_corrente_2019 <- subset(liq_corrente, ANO == 2019)
+
+# Liquidez Seca
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_seca <- aggregate(liq_seca ~ SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+liq_seca <- liq_seca %>%
+  pivot_wider(names_from = SEGMENTO, values_from = liq_seca)
+
+liq_seca_2022 <- subset(liq_seca, ANO == 2022)
+liq_seca_2021 <- subset(liq_seca, ANO == 2021)
+liq_seca_2020 <- subset(liq_seca, ANO == 2020)
+liq_seca_2019 <- subset(liq_seca, ANO == 2019)
+
+# Liquidez Imediata
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+liq_imediata <- aggregate(liq_imediata ~ SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+liq_imediata <- liq_imediata %>%
+  pivot_wider(names_from = SEGMENTO, values_from = liq_imediata)
+
+liq_imediata_2022 <- subset(liq_imediata, ANO == 2022)
+liq_imediata_2021 <- subset(liq_imediata, ANO == 2021)
+liq_imediata_2020 <- subset(liq_imediata, ANO == 2020)
+liq_imediata_2019 <- subset(liq_imediata, ANO == 2019)
 

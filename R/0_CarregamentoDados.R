@@ -1,4 +1,8 @@
+####################### INSTRUÇÕES #######################
+## Neste arquivo serão somente feito os tratamentos dos dados
+
 library(httr)
+
 
 # URL do arquivo FCA
 url_fca <- "https://dados.cvm.gov.br/dados/CIA_ABERTA/CAD/DADOS/cad_cia_aberta.csv"

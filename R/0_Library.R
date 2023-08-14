@@ -2,9 +2,12 @@
 #----------------------------------------------------------------------
 # Pacotes
 #----------------------------------------------------------------------
+## Carregando bibliotecas
+library(WriteXLS)
+library(openxlsx)
 library(tidyverse)
-library(dplyr)
 library(plyr)
+library(dplyr)
 library(pander)
 library(ggpubr)
 library(splitstackshape, quietly = TRUE)
@@ -20,5 +23,7 @@ library(shiny)
 library(plotly)
 library(tidyr)
 library(gridExtra)
+
+
 #----------------------------------------------------------------------
 

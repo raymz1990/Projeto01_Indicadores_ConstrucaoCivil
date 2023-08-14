@@ -2,30 +2,8 @@
 
 atalho <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/"
 
-source(paste(atalho, "R/0_CarregamentoDados.R", sep = ""))
+source(paste(atalho, "R/0_Library.R", sep = ""))
 
-
-## Carregando bibliotecas
-library(WriteXLS)
-library(openxlsx)
-library(tidyverse)
-library(plyr)
-library(dplyr)
-library(pander)
-library(ggpubr)
-library(splitstackshape, quietly = TRUE)
-library(lubridate)
-library(GGally)
-library(ggmosaic)
-library(stringr)
-library(knitr)
-library(DT)
-library(RColorBrewer)
-library(ggplot2)
-library(shiny)
-library(plotly)
-library(tidyr)
-library(gridExtra)
 
 ## Definindo os períodos de estudo
 ano1 <- 2022
@@ -111,18 +89,18 @@ paleta_cores <- data.frame(
     'Outros'                    # 10
     ),
   Cor = c(
-    "#A6A19F",   # 1
-    "#594539",   # 2
-    "#8C7E79",   # 3
-    "#0D0A09",   # 4
-    "#F2F0F0",   # 5
-    "#735E51",   # 6
-    "#403430",   # 7
-    "#A69992",   # 8
-    "#D9D5D2",   # 9
-    "#594B46"    # 10 
+    "black",   # 1
+    "yellow",   # 2
+    "#F2294E",   # 3
+    "#334075",   # 4
+    "brown",   # 5
+    "purple",   # 6
+    "#05C7F2",   # 7
+    "pink",   # 8
+    "grey",   # 9
+    "#FFB700"    # 10 
   )
-)
+) #
 
 # definição de cor para cada Segmento
 cor_constpesada <- paleta_cores$Cor[paleta_cores$SEGMENTO == "Construção Pesada"]

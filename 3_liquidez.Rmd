@@ -146,7 +146,110 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2022$`Exploração de Imóveis`),
     textposition = "top center",
     textfont = list(
-      color = ;cor_expimoveis,
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis
+      )
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_geral_2022$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst
+      )
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_geral_2022$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros
+      )
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_geral_2022
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_geral_2022[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+
+# Criação plot 2021
+date_liq_geral_2021 <- list(liq_geral_2021$TRIMESTRE)
+
+liq_geral_2021_graph <- plot_ly(liq_geral_2021, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_geral_2021$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_geral_2021$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
       size = 12),
     marker = list(
       color = cor_expimoveis,
@@ -161,7 +264,7 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     mode = "lines+markers",
     x = ~TRIMESTRE,
     y = ~`Produtos para Construção`,
-    text = sprintf("%.2f", liq_geral_2022$`Produtos para Construção`),
+    text = sprintf("%.2f", liq_geral_2021$`Produtos para Construção`),
     textposition = "top center",
     textfont = list(
       color = cor_prodconst,
@@ -179,7 +282,7 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     mode = "lines+markers",
     x = ~TRIMESTRE,
     y = ~Outros,
-    text = sprintf("%.2f", liq_geral_2022$Outros),
+    text = sprintf("%.2f", liq_geral_2021$Outros),
     textposition = "top center",
     textfont = list(
       color = cor_outros,
@@ -202,109 +305,12 @@ liq_geral_2022_graph <- plot_ly(liq_geral_2022, hovertemplate = "%{y:.2f}") %>%
     xaxis = list(
       title = "",
       categoryorder = "array",
-      categoryarray = date_liq_geral_2022
-    ),
-    yaxis = list(
-      title = "",
-      tickformat = ".2f"
-    ),
-    hovermode = "x unified",
-    width = 900
-  )
-
-# Criação plot 2021
-date_liq_geral_2021 <- list(liq_geral_2021$TRIMESTRE)
-
-liq_geral_2021_graph <- plot_ly(liq_geral_2021, hovertemplate = "%{y:.2f}") %>%
-  add_trace(
-    name = "Incorporações",
-    type = "scatter",
-    mode = "lines+markers+text",
-    x = ~TRIMESTRE,
-    y = ~Incorporações,
-    text = sprintf("%.2f", liq_geral_2021$Incorporações),
-    textposition = "top center",
-    textfont = list(
-      color = "#334075",
-      size = 12),
-    marker = list(
-      color = "#334075",
-      size = 5),
-    line = list(
-      width = 2,
-      color = "#334075"
-    )
-  ) %>%
-  add_trace(
-    name = "Exploração de Imóveis",
-    type = "scatter",
-    mode = "lines+markers+text",
-    x = ~TRIMESTRE,
-    y = ~`Exploração de Imóveis`,
-    text = sprintf("%.2f", liq_geral_2021$`Exploração de Imóveis`),
-    textposition = "top center",
-    textfont = list(
-      color = "#F2294E",
-      size = 12),
-    marker = list(
-      color = "#F2294E",
-      size = 5),
-    line = list(
-      width = 2,
-      color = "#F2294E")
-  ) %>%
-  add_trace(
-    name = "Produtos para Construção",
-    type = "scatter",
-    mode = "lines+markers",
-    x = ~TRIMESTRE,
-    y = ~`Produtos para Construção`,
-    text = sprintf("%.2f", liq_geral_2021$`Produtos para Construção`),
-    textposition = "top center",
-    textfont = list(
-      color = "#05C7F2",
-      size = 12),
-    marker = list(
-      color = "#05C7F2",
-      size = 5),
-    line = list(
-      width = 2,
-      color = "#05C7F2")
-  ) %>%
-  add_trace(
-    name = "Outros",
-    type = "scatter",
-    mode = "lines+markers",
-    x = ~TRIMESTRE,
-    y = ~Outros,
-    text = sprintf("%.2f", liq_geral_2021$Outros),
-    textposition = "top center",
-    textfont = list(
-      color = "#FFB700",
-      size = 12),
-    marker = list(
-      color = "#FFB700",
-      size = 5),
-    line = list(
-      width = 2,
-      color = "#FFB700")
-  ) %>%
-  layout(
-    legend = list(
-      x = 0.5,
-      y = -0.2,
-      xanchor = "center",
-      yanchor = "top",
-      orientation = "h"
-    ),
-    xaxis = list(
-      title = "",
-      categoryorder = "array",
       categoryarray = date_liq_geral_2021
     ),
     yaxis = list(
       title = "",
-      tickformat = ".2f"
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_geral_2021[, -c(1:2)]))) )
     ),
     hovermode = "x unified",
     width = 900
@@ -323,14 +329,14 @@ liq_geral_2020_graph <- plot_ly(liq_geral_2020, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2020$Incorporações),
     textposition = "top center",
     textfont = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 12),
     marker = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 5),
     line = list(
       width = 2,
-      color = "#334075"
+      color = cor_incorp
     )
   ) %>%
   add_trace(
@@ -342,14 +348,14 @@ liq_geral_2020_graph <- plot_ly(liq_geral_2020, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2020$`Exploração de Imóveis`),
     textposition = "top center",
     textfont = list(
-      color = "#F2294E",
+      color = cor_expimoveis,
       size = 12),
     marker = list(
-      color = "#F2294E",
+      color = cor_expimoveis,
       size = 5),
     line = list(
       width = 2,
-      color = "#F2294E")
+      color = cor_expimoveis)
   ) %>%
   add_trace(
     name = "Produtos para Construção",
@@ -360,14 +366,14 @@ liq_geral_2020_graph <- plot_ly(liq_geral_2020, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2020$`Produtos para Construção`),
     textposition = "top center",
     textfont = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 12),
     marker = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 5),
     line = list(
       width = 2,
-      color = "#05C7F2")
+      color = cor_prodconst)
   ) %>%
   add_trace(
     name = "Outros",
@@ -378,14 +384,14 @@ liq_geral_2020_graph <- plot_ly(liq_geral_2020, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2020$Outros),
     textposition = "top center",
     textfont = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 12),
     marker = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 5),
     line = list(
       width = 2,
-      color = "#FFB700")
+      color = cor_outros)
   ) %>%
   layout(
     legend = list(
@@ -402,7 +408,8 @@ liq_geral_2020_graph <- plot_ly(liq_geral_2020, hovertemplate = "%{y:.2f}") %>%
     ),
     yaxis = list(
       title = "",
-      tickformat = ".2f"
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_geral_2020[, -c(1:2)]))) + 0.5 )
     ),
     hovermode = "x unified",
     width = 900
@@ -421,14 +428,14 @@ liq_geral_2019_graph <- plot_ly(liq_geral_2019, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2019$Incorporações),
     textposition = "top center",
     textfont = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 12),
     marker = list(
-      color = "#334075",
+      color = cor_incorp,
       size = 5),
     line = list(
       width = 2,
-      color = "#334075"
+      color = cor_incorp
     )
   ) %>%
   add_trace(
@@ -440,14 +447,14 @@ liq_geral_2019_graph <- plot_ly(liq_geral_2019, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2019$`Exploração de Imóveis`),
     textposition = "top center",
     textfont = list(
-      color = "#F2294E",
+      color = cor_expimoveis,
       size = 12),
     marker = list(
-      color = "#F2294E",
+      color = cor_expimoveis,
       size = 5),
     line = list(
       width = 2,
-      color = "#F2294E")
+      color = cor_expimoveis)
   ) %>%
   add_trace(
     name = "Produtos para Construção",
@@ -458,14 +465,14 @@ liq_geral_2019_graph <- plot_ly(liq_geral_2019, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2019$`Produtos para Construção`),
     textposition = "top center",
     textfont = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 12),
     marker = list(
-      color = "#05C7F2",
+      color = cor_prodconst,
       size = 5),
     line = list(
       width = 2,
-      color = "#05C7F2")
+      color = cor_prodconst)
   ) %>%
   add_trace(
     name = "Outros",
@@ -476,14 +483,14 @@ liq_geral_2019_graph <- plot_ly(liq_geral_2019, hovertemplate = "%{y:.2f}") %>%
     text = sprintf("%.2f", liq_geral_2019$Outros),
     textposition = "top center",
     textfont = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 12),
     marker = list(
-      color = "#FFB700",
+      color = cor_outros,
       size = 5),
     line = list(
       width = 2,
-      color = "#FFB700")
+      color = cor_outros)
   ) %>%
   layout(
     legend = list(
@@ -500,7 +507,8 @@ liq_geral_2019_graph <- plot_ly(liq_geral_2019, hovertemplate = "%{y:.2f}") %>%
     ),
     yaxis = list(
       title = "",
-      tickformat = ".2f"
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_geral_2019[, -c(1:2)]))) + 0.5 )
     ),
     hovermode = "x unified",
     width = 900
@@ -522,7 +530,7 @@ tabsetPanel(
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.geral_incorp <- empresas2 %>%
+tb_liq_geral_incorp <- empresas2 %>%
   filter(SEGMENTO == "Incorporações") %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
@@ -530,46 +538,7 @@ tb_liq.geral_incorp <- empresas2 %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-liq_geral_incorp <- datatable(
-  tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')],
-  class = 'cell-border stripe',
-  rownames = FALSE,
-  editable = TRUE
-) %>%
-  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
-  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
-
-
-
-
-
-
-# Criar o tabsetPanel com as guias para cada ano
-tabsetPanel(
-  tabPanel("EMPRESAS", liq_geral_incorp)
-  #tabPanel("4T21", liq_geral_incorp_4T21),
-  #tabPanel("4T20", liq_geral_incorp_4T20),
-  #tabPanel("4T19", liq_geral_incorp_4T19)
-)
-
-
-```
-
-------------------------------------------------------------------------
-
-##### EXPLORAÇÃO DE IMÓVEIS
-
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
- 
-tb_liq.geral_incorp <- empresas2 %>%
-  filter(SEGMENTO == "Exploração de Imóveis") %>%
-  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
-  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
-  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
-  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
-  filter(!is.na(EMPRESA))
-
-DT::datatable(tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
+DT::datatable(tb_liq_geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
               rownames = FALSE,
               editable = TRUE) %>%
@@ -580,11 +549,34 @@ DT::datatable(tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')
 
 ------------------------------------------------------------------------
 
-##### Produtos para Construção
+##### EXPLORAÇÃO DE IMÓVEIS
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.geral_incorp <- empresas2 %>%
+tb_liq_geral_incorp <- empresas2 %>%
+  filter(SEGMENTO == "Exploração de Imóveis") %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
+  filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_geral) %>%
+  select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
+  filter(!is.na(EMPRESA))
+
+DT::datatable(tb_liq_geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
+              class = 'cell-border stripe',
+              rownames = FALSE,
+              editable = TRUE) %>%
+  formatStyle(columns = c("EMPRESA"), width = "40%") %>%
+  formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
+
+```
+
+------------------------------------------------------------------------
+
+##### PRODUTOS PARA CONSTRUÇÃO
+
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+ 
+tb_liq_geral_incorp <- empresas2 %>%
   filter(SEGMENTO == "Produtos para Construção") %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
@@ -592,7 +584,7 @@ tb_liq.geral_incorp <- empresas2 %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-DT::datatable(tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
+DT::datatable(tb_liq_geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
               rownames = FALSE,
               editable = TRUE) %>%
@@ -607,7 +599,7 @@ DT::datatable(tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.geral_incorp <- empresas2 %>%
+tb_liq_geral_incorp <- empresas2 %>%
   filter(SEGMENTO == "Outros") %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_geral), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
@@ -615,7 +607,7 @@ tb_liq.geral_incorp <- empresas2 %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-DT::datatable(tb_liq.geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
+DT::datatable(tb_liq_geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
               rownames = FALSE,
               editable = TRUE) %>%
@@ -634,35 +626,419 @@ O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo
 
 ------------------------------------------------------------------------
 
-####  {.tabset .tabset-fade .tabset-pills}
+#### {.tabset .tabset-fade .tabset-pills}
 
-</center>
+##### LIQUIDEZ CORRENTE
 
-##### LIQUIDEZ CORRENTE EM 2022
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+# Criação plot 2022
+date_liq_corrente_2022 <- list(liq_corrente_2022$TRIMESTRE)
 
-# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
-liq_corrente <- aggregate(liq_corrente ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+liq_corrente_2022_graph <- plot_ly(liq_corrente_2022, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_corrente_2022$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_corrente_2022$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis
+      )
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_corrente_2022$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst
+      )
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_corrente_2022$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros
+      )
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_corrente_2022
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_corrente_2022[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
 
-# Calcular a média para cada segmento no período em 2022
-liq_corrente_segmento <- subset(liq_corrente, ANO == 2022)
-liq_corrente_segmento <- aggregate(liq_corrente ~ SEGMENTO + TRIMESTRE, data = liq_corrente_segmento, FUN = mean)
 
-# Plotar o gráfico de linhas usando o pacote ggplot2
+# Criação plot 2021
+date_liq_corrente_2021 <- list(liq_corrente_2021$TRIMESTRE)
 
-ggplot(liq_corrente_segmento, aes(x = TRIMESTRE, y = liq_corrente, color = SEGMENTO, group = SEGMENTO)) +
-  geom_line() + # Remova a legenda do gráfico
-  geom_point() +
-  geom_text(aes(label = round(liq_corrente, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
-  labs(x = "", y = "") +
-  scale_fill_brewer(name = "Segmento",
-                    palette = "RdBu", 
-                    drop = FALSE) +
-  theme_light() +
-  theme(legend.position = "bottom") +
-  ylim(0, ceiling(max(liq_corrente_segmento$liq_corrente)))  # Defina o limite do eixo y
+liq_corrente_2021_graph <- plot_ly(liq_corrente_2021, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_corrente_2021$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_corrente_2021$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_corrente_2021$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_corrente_2021$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_corrente_2021
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_corrente_2021[, -c(1:2)]))) )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
 
+# Criação plot 2020
+date_liq_corrente_2020 <- list(liq_corrente_2020$TRIMESTRE)
+
+liq_corrente_2020_graph <- plot_ly(liq_corrente_2020, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_corrente_2020$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_corrente_2020$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_corrente_2020$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_corrente_2020$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_corrente_2020
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_corrente_2020[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criação plot 2019
+date_liq_corrente_2019 <- list(liq_corrente_2019$TRIMESTRE)
+
+liq_corrente_2019_graph <- plot_ly(liq_corrente_2019, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_corrente_2019$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_corrente_2019$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_corrente_2019$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_corrente_2019$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_corrente_2019
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_corrente_2019[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel("2022", liq_corrente_2022_graph),
+  tabPanel("2021", liq_corrente_2021_graph),
+  tabPanel("2020", liq_corrente_2020_graph),
+  tabPanel("2019", liq_corrente_2019_graph)
+)
 
 ```
 
@@ -672,38 +1048,20 @@ ggplot(liq_corrente_segmento, aes(x = TRIMESTRE, y = liq_corrente, color = SEGME
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.corrente_incorp <- empresas %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_corrente_incorp <- empresas2 %>%
   filter(SEGMENTO == "Incorporações") %>%
-  select(EMPRESA) %>%
-  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente ), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
-  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente ) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.corrente_incorp[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_geral_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
-
-
 
 ```
 
@@ -712,35 +1070,19 @@ DT::datatable(tb_liq.corrente_incorp[,c('EMPRESA',
 ##### EXPLORAÇÃO DE IMÓVEIS
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
-
-liq_corrente_expimoveis <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+ 
+tb_liq_corrente_incorp <- empresas2 %>%
   filter(SEGMENTO == "Exploração de Imóveis") %>%
-  select(EMPRESA) %>%
-  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente ), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
-  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente ) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_corrente_expimoveis[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_corrente_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -748,38 +1090,22 @@ DT::datatable(liq_corrente_expimoveis[,c('EMPRESA',
 
 ------------------------------------------------------------------------
 
-##### Produtos para Construção
+##### PRODUTOS PARA CONSTRUÇÃO
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-liq_corrente_constpesada <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_corrente_incorp <- empresas2 %>%
   filter(SEGMENTO == "Produtos para Construção") %>%
-  select(EMPRESA) %>%
-  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente ), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
-  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente ) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_corrente_constpesada[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_corrente_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -791,34 +1117,18 @@ DT::datatable(liq_corrente_constpesada[,c('EMPRESA',
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-liq_corrente_outros <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_corrente_incorp <- empresas2 %>%
   filter(SEGMENTO == "Outros") %>%
-  select(EMPRESA) %>%
-  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente), by = "EMPRESA") %>%
+  left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_corrente ), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
-  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente) %>%
+  pivot_wider(names_from = TRIMESTRE, values_from = liq_corrente ) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_corrente_outros[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_corrente_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -838,31 +1148,417 @@ O índice de liquidez corrente demonstra a capacidade de pagamento a curto prazo
 
 </center>
 
-##### LIQUIDEZ SECA EM 2022
+##### LIQUIDEZ SECA
 
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
-liq_seca <- aggregate(liq_seca ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+# Criação plot 2022
+date_liq_seca_2022 <- list(liq_seca_2022$TRIMESTRE)
 
-# Calcular a média para cada segmento no período em 2022
-liq_seca_segmento <- subset(liq_seca, ANO == 2022)
-liq_seca_segmento <- aggregate(liq_seca ~ SEGMENTO + TRIMESTRE, data = liq_seca_segmento, FUN = mean)
+liq_seca_2022_graph <- plot_ly(liq_seca_2022, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_seca_2022$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_seca_2022$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis
+      )
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_seca_2022$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst
+      )
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_seca_2022$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros
+      )
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_seca_2022
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_seca_2022[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
 
-# Plotar o gráfico de linhas usando o pacote ggplot2
 
-ggplot(liq_seca_segmento, aes(x = TRIMESTRE, y = liq_seca, color = SEGMENTO, group = SEGMENTO)) +
-  geom_line() + # Remova a legenda do gráfico
-  geom_point() +
-  geom_text(aes(label = round(liq_seca, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
-  labs(x = "", y = "") +
-  scale_fill_brewer(name = "Segmento",
-                    palette = "RdBu", 
-                    drop = FALSE) +
-  theme_light() +
-  theme(legend.position = "bottom") +
-  ylim(0, ceiling(max(liq_seca_segmento$liq_seca)))  # Defina o limite do eixo y
+# Criação plot 2021
+date_liq_seca_2021 <- list(liq_seca_2021$TRIMESTRE)
 
+liq_seca_2021_graph <- plot_ly(liq_seca_2021, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_seca_2021$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_seca_2021$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_seca_2021$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_seca_2021$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_seca_2021
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_seca_2021[, -c(1:2)]))) )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criação plot 2020
+date_liq_seca_2020 <- list(liq_seca_2020$TRIMESTRE)
+
+liq_seca_2020_graph <- plot_ly(liq_seca_2020, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_seca_2020$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_seca_2020$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_seca_2020$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_seca_2020$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_seca_2020
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_seca_2020[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criação plot 2019
+date_liq_seca_2019 <- list(liq_seca_2019$TRIMESTRE)
+
+liq_seca_2019_graph <- plot_ly(liq_seca_2019, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_seca_2019$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_seca_2019$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_seca_2019$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_seca_2019$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_seca_2019
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_seca_2019[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel("2022", liq_seca_2022_graph),
+  tabPanel("2021", liq_seca_2021_graph),
+  tabPanel("2020", liq_seca_2020_graph),
+  tabPanel("2019", liq_seca_2019_graph)
+)
 
 ```
 
@@ -871,35 +1567,19 @@ ggplot(liq_seca_segmento, aes(x = TRIMESTRE, y = liq_seca, color = SEGMENTO, gro
 ##### INCORPORAÇÕES
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
-
-tb_liq.seca_incorp <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+ 
+tb_liq_seca_incorp <- empresas2 %>%
   filter(SEGMENTO == "Incorporações") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.seca_incorp[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_seca_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -911,34 +1591,18 @@ DT::datatable(tb_liq.seca_incorp[,c('EMPRESA',
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-liq_seca_expimoveis <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_seca_incorp <- empresas2 %>%
   filter(SEGMENTO == "Exploração de Imóveis") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_seca_expimoveis[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_seca_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -946,38 +1610,22 @@ DT::datatable(liq_seca_expimoveis[,c('EMPRESA',
 
 ------------------------------------------------------------------------
 
-##### Produtos para Construção
+##### PRODUTOS PARA CONSTRUÇÃO
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.seca_constpesada <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_seca_incorp <- empresas2 %>%
   filter(SEGMENTO == "Produtos para Construção") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.seca_constpesada[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_seca_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -988,35 +1636,19 @@ DT::datatable(tb_liq.seca_constpesada[,c('EMPRESA',
 ##### OUTROS
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
-
-liq_seca_outros <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+ 
+tb_liq_seca_incorp <- empresas2 %>%
   filter(SEGMENTO == "Outros") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_seca), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_seca) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_seca_outros[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_seca_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -1042,31 +1674,417 @@ Em resumo, a liquidez imediata é a medida da capacidade de uma entidade de aten
 
 </center>
 
-##### LIQUIDEZ IMEDIATA EM 2022
+##### LIQUIDEZ IMEDIATA
 
-```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
+```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, width=10}
 
-# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
-liq_imediata <- aggregate(liq_imediata ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = liquidez, FUN = mean)
+# Criação plot 2022
+date_liq_imediata_2022 <- list(liq_imediata_2022$TRIMESTRE)
 
-# Calcular a média para cada segmento no período em 2022
-liq_imediata_segmento <- subset(liq_imediata, ANO == 2022)
-liq_imediata_segmento <- aggregate(liq_imediata ~ SEGMENTO + TRIMESTRE, data = liq_imediata_segmento, FUN = mean)
+liq_imediata_2022_graph <- plot_ly(liq_imediata_2022, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_imediata_2022$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_imediata_2022$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis
+      )
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_imediata_2022$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst
+      )
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_imediata_2022$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros
+      )
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_imediata_2022
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_imediata_2022[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
 
-# Plotar o gráfico de linhas usando o pacote ggplot2
 
-ggplot(liq_imediata_segmento, aes(x = TRIMESTRE, y = liq_imediata, color = SEGMENTO, group = SEGMENTO)) +
-  geom_line() + # Remova a legenda do gráfico
-  geom_point() +
-  geom_text(aes(label = round(liq_imediata, 2)), vjust = -0.5, show.legend = FALSE) +  # Adicione os valores nas linhas
-  labs(x = "", y = "") +
-  scale_fill_brewer(name = "Segmento",
-                    palette = "RdBu", 
-                    drop = FALSE) +
-  theme_light() +
-  theme(legend.position = "bottom") +
-  ylim(0, ceiling(max(liq_imediata_segmento$liq_imediata)))  # Defina o limite do eixo y
+# Criação plot 2021
+date_liq_imediata_2021 <- list(liq_imediata_2021$TRIMESTRE)
 
+liq_imediata_2021_graph <- plot_ly(liq_imediata_2021, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_imediata_2021$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_imediata_2021$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_imediata_2021$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_imediata_2021$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_imediata_2021
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_imediata_2021[, -c(1:2)]))) )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criação plot 2020
+date_liq_imediata_2020 <- list(liq_imediata_2020$TRIMESTRE)
+
+liq_imediata_2020_graph <- plot_ly(liq_imediata_2020, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_imediata_2020$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_imediata_2020$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_imediata_2020$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_imediata_2020$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_imediata_2020
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_imediata_2020[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criação plot 2019
+date_liq_imediata_2019 <- list(liq_imediata_2019$TRIMESTRE)
+
+liq_imediata_2019_graph <- plot_ly(liq_imediata_2019, hovertemplate = "%{y:.2f}") %>%
+  add_trace(
+    name = "Incorporações",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~Incorporações,
+    text = sprintf("%.2f", liq_imediata_2019$Incorporações),
+    textposition = "top center",
+    textfont = list(
+      color = cor_incorp,
+      size = 12),
+    marker = list(
+      color = cor_incorp,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_incorp
+    )
+  ) %>%
+  add_trace(
+    name = "Exploração de Imóveis",
+    type = "scatter",
+    mode = "lines+markers+text",
+    x = ~TRIMESTRE,
+    y = ~`Exploração de Imóveis`,
+    text = sprintf("%.2f", liq_imediata_2019$`Exploração de Imóveis`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_expimoveis,
+      size = 12),
+    marker = list(
+      color = cor_expimoveis,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_expimoveis)
+  ) %>%
+  add_trace(
+    name = "Produtos para Construção",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~`Produtos para Construção`,
+    text = sprintf("%.2f", liq_imediata_2019$`Produtos para Construção`),
+    textposition = "top center",
+    textfont = list(
+      color = cor_prodconst,
+      size = 12),
+    marker = list(
+      color = cor_prodconst,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_prodconst)
+  ) %>%
+  add_trace(
+    name = "Outros",
+    type = "scatter",
+    mode = "lines+markers",
+    x = ~TRIMESTRE,
+    y = ~Outros,
+    text = sprintf("%.2f", liq_imediata_2019$Outros),
+    textposition = "top center",
+    textfont = list(
+      color = cor_outros,
+      size = 12),
+    marker = list(
+      color = cor_outros,
+      size = 5),
+    line = list(
+      width = 2,
+      color = cor_outros)
+  ) %>%
+  layout(
+    legend = list(
+      x = 0.5,
+      y = -0.2,
+      xanchor = "center",
+      yanchor = "top",
+      orientation = "h"
+    ),
+    xaxis = list(
+      title = "",
+      categoryorder = "array",
+      categoryarray = date_liq_imediata_2019
+    ),
+    yaxis = list(
+      title = "",
+      tickformat = ".2f",
+      range = c(0, ceiling(max(as.matrix(liq_imediata_2019[, -c(1:2)]))) + 0.5 )
+    ),
+    hovermode = "x unified",
+    width = 900
+  )
+
+# Criar o tabsetPanel com as guias para cada ano
+tabsetPanel(
+  tabPanel("2022", liq_imediata_2022_graph),
+  tabPanel("2021", liq_imediata_2021_graph),
+  tabPanel("2020", liq_imediata_2020_graph),
+  tabPanel("2019", liq_imediata_2019_graph)
+)
 
 ```
 
@@ -1075,38 +2093,21 @@ ggplot(liq_imediata_segmento, aes(x = TRIMESTRE, y = liq_imediata, color = SEGME
 ##### INCORPORAÇÕES
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
-
-tb_liq.imediata_incorp <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+ 
+tb_liq_imediata_incorp <- empresas2 %>%
   filter(SEGMENTO == "Incorporações") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.imediata_incorp[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_imediata_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
-
 
 ```
 
@@ -1115,35 +2116,19 @@ DT::datatable(tb_liq.imediata_incorp[,c('EMPRESA',
 ##### EXPLORAÇÃO DE IMÓVEIS
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
-
-liq_imediata_expimoveis <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+ 
+tb_liq_imediata_incorp <- empresas2 %>%
   filter(SEGMENTO == "Exploração de Imóveis") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(liq_imediata_expimoveis[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_imediata_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -1151,38 +2136,22 @@ DT::datatable(liq_imediata_expimoveis[,c('EMPRESA',
 
 ------------------------------------------------------------------------
 
-##### Produtos para Construção
+##### PRODUTOS PARA CONSTRUÇÃO
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.imediata_constpesada <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_imediata_incorp <- empresas2 %>%
   filter(SEGMENTO == "Produtos para Construção") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#media_segmento <- liq_imediata_incorp %>%
-#  summarise(across(`4T19`:`4T22`, mean, na.rm = TRUE)) %>%
-#  mutate(EMPRESA = "Média do Segmento") %>%
-#  mutate(across(`4T19`:`4T22`, ~round(., 2)))
-
-#liq_imediata_incorp <- bind_rows(liq_imediata_incorp, media_segmento)
-
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.imediata_constpesada[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_imediata_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
@@ -1194,27 +2163,18 @@ DT::datatable(tb_liq.imediata_constpesada[,c('EMPRESA',
 
 ```{r, comment=FALSE, message=FALSE, fig.align='center', warning=TRUE, echo = FALSE, warning=FALSE, fig.width=10}
  
-tb_liq.imediata_outros <- empresas2 %>%
-  select(EMPRESA, SEGMENTO) %>%
+tb_liq_imediata_incorp <- empresas2 %>%
   filter(SEGMENTO == "Outros") %>%
-  select(EMPRESA) %>%
   left_join(liquidez %>% select(EMPRESA, TRIMESTRE, liq_imediata), by = "EMPRESA") %>%
   filter(TRIMESTRE %in% c("4T19", "4T20", "4T21", "4T22")) %>%
   pivot_wider(names_from = TRIMESTRE, values_from = liq_imediata) %>%
   select(EMPRESA, `4T19`, `4T20`, `4T21`, `4T22`) %>%
   filter(!is.na(EMPRESA))
 
-#----------------------------------------------------------------------
-
-DT::datatable(tb_liq.imediata_outros[,c('EMPRESA', 
-                                        '4T19',
-                                        '4T20',
-                                        '4T21',
-                                        '4T22')], 
+DT::datatable(tb_liq_imediata_incorp[, c('EMPRESA', '4T19', '4T20', '4T21', '4T22')], 
               class = 'cell-border stripe',
-              rownames = F,
-              #filter = 'top',
-              editable = T) %>%
+              rownames = FALSE,
+              editable = TRUE) %>%
   formatStyle(columns = c("EMPRESA"), width = "40%") %>%
   formatStyle(columns = c("4T19", "4T20", "4T21", "4T22"), width = "15%")
 
