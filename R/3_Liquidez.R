@@ -1,9 +1,7 @@
 ####################### INSTRUÇÕES #######################
 ## Neste arquivo serão somente feito os tratamentos dos dados
 
-atalho <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/"
-
-source(paste(atalho, "R/0_DemonstracoesFinanceiras.R", sep = ""))
+source(paste("./R/0_DemonstracoesFinanceiras.R"))
 
 #### INDICADORES DE LIQUIDEZ ############
 # Tabela de liquidez. 
@@ -84,3 +82,26 @@ liq_imediata_2021 <- subset(liq_imediata, ANO == 2021)
 liq_imediata_2020 <- subset(liq_imediata, ANO == 2020)
 liq_imediata_2019 <- subset(liq_imediata, ANO == 2019)
 
+
+### CAPITAL CIRCULANTE LÍQUIDO
+# Filtrar tabela BP para as colunas desejadas
+capitalcirculante <- subset(liquidez, select = c("EMPRESA", 
+                                                 "SEGMENTO", 
+                                                 "TRIMESTRE",
+                                                 "ANO",
+                                                 "1.01 - Ativo Circulante",
+                                                 "2.01 - Passivo Circulante"))
+
+# Coluna de Capital Circulante
+capitalcirculante$capitalcirculante <- round(((capitalcirculante$'1.01 - Ativo Circulante' - capitalcirculante$'2.01 - Passivo Circulante') / 1000), 1)
+
+# Calcular a média da coluna VL_CONTA para cada combinação de EMPRESA, SEGMENTO, TRIMESTRE e CD_CONTA
+cap_circulante <- aggregate(capitalcirculante ~ EMPRESA + SEGMENTO + TRIMESTRE + ANO, data = capitalcirculante, FUN = mean)
+
+# Calcular a média para cada segmento no período em 2022
+cap_circulante_segmento <- subset(cap_circulante, ANO == 2022)
+cap_circulante_segmento <- aggregate(capitalcirculante ~ SEGMENTO + TRIMESTRE, data = cap_circulante_segmento, FUN = mean)
+cap_circulante_segmento$capitalcirculante <- round((cap_circulante_segmento$capitalcirculante), 1)
+
+# Definir a ordem dos segmentos
+cap_circulante_segmento$SEGMENTO <- factor(cap_circulante_segmento$SEGMENTO, levels = c("Incorporações", "Exploração de Imóveis", "Produtos para Construção", "Outros"))

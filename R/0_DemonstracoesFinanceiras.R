@@ -1,9 +1,7 @@
 ####################### INSTRUÇÕES #######################
 ## Neste arquivo serão somente feito os tratamentos dos dados
 
-atalho <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/"
-
-source(paste(atalho, "R/0_BaseDados.R", sep = ""))
+source(paste("./R/0_BaseDados.R", sep = ""))
 
 
 CD_CVM_unique <- unique(empresas$CD_CVM)
@@ -17,6 +15,8 @@ BP$CD_CVM <- as.character(BP$CD_CVM)
 BP <- subset(BP, CD_CVM %in% CD_CVM_unique & ORDEM_EXERC == "ÚLTIMO")
 # Criando colunas Trimestre e Ano
 BP$TRIMESTRE <- paste0(as.numeric(substr(BP$DT_REFER, 6, 7)) / 3, 'T', 
+                       as.numeric(substr(BP$DT_REFER, 3, 4)))
+BP$SEMESTRE <- paste0(as.numeric(substr(BP$DT_REFER, 6, 7)) / 6, 'S', 
                        as.numeric(substr(BP$DT_REFER, 3, 4)))
 BP$ANO <- as.numeric(substr(BP$DT_REFER, 1, 4))
 

@@ -12,8 +12,8 @@ url_itr_base <- "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/"
 url_dfp_base <- "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/"
 
 # Range de anos para ITR e DFP
-anos_itr <- 2019:2022
-anos_dfp <- 2019:2022
+anos_itr <- 2020:2023
+anos_dfp <- 2020:2023
 
 # Pasta de destino
 pasta_destino <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/Dados_CVM/"
@@ -43,13 +43,13 @@ for (ano in anos_dfp) {
 
 
 # Pastas de destino para itr_cia_aberta_ano.csv e dfp_cia_aberta_ano.csv
-pasta_bp <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/BP"
-pasta_dfc_md <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DFC_MD"
-pasta_dfc_mi <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DFC_MI"
-pasta_dmpl <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DMPL"
-pasta_dre <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DRE"
-pasta_dva <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DVA"
-pasta_dados <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil//Dados_CVM/DemonstracoesFinanceiras/DADOS"
+pasta_bp <- "./Dados_CVM/DemonstracoesFinanceiras/BP"
+pasta_dfc_md <- "./Dados_CVM/DemonstracoesFinanceiras/DFC_MD"
+pasta_dfc_mi <- "./Dados_CVM/DemonstracoesFinanceiras/DFC_MI"
+pasta_dmpl <- "./Dados_CVM/DemonstracoesFinanceiras/DMPL"
+pasta_dre <- "./Dados_CVM/DemonstracoesFinanceiras/DRE"
+pasta_dva <- "./Dados_CVM/DemonstracoesFinanceiras/DVA"
+pasta_dados <- "./Dados_CVM/DemonstracoesFinanceiras/DADOS"
 
 
 # Extrair itr_cia_aberta_ano.csv e dfp_cia_aberta_ano.csv

@@ -3,7 +3,7 @@
 
 atalho <- "C:/Users/Raymundo/Documentos/R/Projeto01_Indicadores_ConstrucaoCivil/"
 
-source(paste(atalho, "R/0_DemonstracoesFinanceiras.R", sep = ""))
+source(paste("./R/0_DemonstracoesFinanceiras.R", sep = ""))
 
 
 
